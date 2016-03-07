@@ -1,0 +1,27 @@
+{
+  "name": "ajax-action",
+  "version": "1.0.0",
+  "description": "Action wrapper for ajax library.",
+  "main": "ajaxAction.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/winterland1989/ajax-action.git"
+  },
+  "keywords": [
+    "ajax",
+    "action",
+    "async"
+  ],
+  "author": "winterland",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/winterland1989/ajax-action/issues"
+  },
+  "homepage": "https://github.com/winterland1989/ajax-action#readme",
+  "dependencies": {
+    "action-js": ">=4.0.0"
+  }
+}
