@@ -2,15 +2,12 @@ Action = require 'action-js'
 
 parseParam = (str) ->
     if str?
-        i = str.indexOf '?'
-        str = str[i+1..]
-
         pairs = str.split("&")
         params = {}
         for pair in pairs
             pair = pair.split("=")
             key = decodeURIComponent(pair[0])
-            value = if pair.length == 2 then decodeURIComponent pair[1]
+            value = if pair.length == 2 then decodeURIComponent pair[1] else null
             if params[key]?
                 unless params[key] instanceof Array
                     params[key] = [params[key]]
@@ -21,25 +18,31 @@ parseParam = (str) ->
 
     else {}
 
-parseCurrentParam = -> parseParam window.location.search
+parseSearch = -> parseParam window.location.search[1..]
+parseHash = -> parseParam window.location.hash[1..]
+setHash = (hashObj) -> window.location.hash = '#' + (buildParam hashObj)
 
 # recursively build param string
 buildParamR = (prefix , data) ->
     result = []
-    if data instanceof Array
-        for v in data
-            if (typeof v) == 'object'
-                result.push buildParamR(prefix, v)
-            else if v?
-                result.push encodeURIComponent(prefix) + "=" + encodeURIComponent(v)
-    else
-        for k, v of data
-            key = if prefix then prefix + '[' + k + ']' else k
-            if (typeof v) == 'object'
-                result.push buildParamR(key, v)
-            else if v?
-                result.push encodeURIComponent(key) + "=" + encodeURIComponent(v)
-    result.join '&'
+    if data?
+        if data instanceof Array
+            for v in data
+                if (typeof v) == 'object'
+                    result.push buildParamR(prefix, v)
+                else if v?
+                    result.push encodeURIComponent(prefix) + "=" + encodeURIComponent(v)
+        else
+            for k, v of data
+                key = if prefix then prefix + '[' + k + ']' else k
+                if (typeof v) == 'object'
+                    result.push buildParamR(key, v)
+                else if v?
+                    result.push encodeURIComponent(key) + "=" + encodeURIComponent(v)
+    else if prefix?
+        result.push encodeURIComponent(prefix)
+
+    (kv for kv in result when kv != '').join '&'
 
 # build query string
 buildParam = (data) -> buildParamR('', data)
@@ -111,8 +114,10 @@ ajax = (opts) ->
 
 module.exports = {
         parseParam
-    ,   parseCurrentParam
     ,   buildParam
     ,   jsonp
     ,   ajax
+    ,   parseSearch
+    ,   parseHash
+    ,   setHash
     }
