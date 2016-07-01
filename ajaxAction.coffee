@@ -1,5 +1,14 @@
 Action = require 'action-js'
 
+# divide workload into group of workload
+divideArray = (arr, len) ->
+    res = []
+    for a, i in arr
+        j = Math.floor(i / len)
+        unless res[j]? then res[j] = []
+        res[j][i % len] = a
+    res
+
 parseParam = (str) ->
     if str?
         pairs = str.split("&")
@@ -120,4 +129,5 @@ module.exports = {
     ,   parseSearch
     ,   parseHash
     ,   setHash
+    ,   divideArray
     }

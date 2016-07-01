@@ -205,4 +205,11 @@ Set a parameter object into `window.location.hash`, this function is added becau
 
 + Everytime application state change, change hash string using `setHash` so users can use the link to re-enter this state.
 
+divideArray([a], Int)
+------------
+
+A helper for dividing workload in to group of workload，eg:
+
+`divideArray [1..10], 3 ==  [ [1, 2, 3], [4, 5, 6], [7, 8, 9], [10] ]`
+
 That'all, happy hacking!
