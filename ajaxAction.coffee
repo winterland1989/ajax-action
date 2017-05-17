@@ -88,6 +88,7 @@ ajax = (opts) ->
     new Action (cb) ->
         xhr = new (window.XMLHttpRequest)
         xhr.open opts.method, opts.url, true, opts.user, opts.password
+        xhr.onerror = (-> cb new Error 'REQUEST_ERROR: status' + xhr.status)
         xhr.onload = ->
             if xhr.readyState == 4
                 if xhr.status >= 200 and xhr.status < 300
